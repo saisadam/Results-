@@ -30,7 +30,7 @@ function getResult() {
     const student = students[roll];
     display.innerHTML = `
       Name: ${student.name} <br>
-      Marks: ${student.marks} <br>
+      result: ${student.result} <br>
       Grade: ${student.grade}
     `;
   } else {
