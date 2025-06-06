@@ -1,39 +1,29 @@
 
-const students = {
-  "23F91A05G5": { name: "Shaik Rahamthulla", result : "all pass", grade: "A" },
-"23F91A05I3": { name: "Sai Sadam", result : "all pass", grade: "A" },
-  "23F91A05F1": { name: "Thomas spark", result : "all pass", grade: "A" },
-"23F91A05H8": { name: "raavan ka big fan", result : "all pass", grade: "A" },
+let studentData = {};
 
-"23F91A05H2": { name: "Davood bhai ERRI💐", result : "all pass", grade: "A" },
-"23F91A05I5": { name: "Siva Reddy", result : "all pass", grade: "A" },
-"23F91A05J3": { name: "Shesi", result : "all pass", grade: "A" },
-"23F91A05J5": { name: "THARUN", result : "all pass", grade: "A" },
-
-
-"23F91A05F6": { name: "ABDUL", result : "all pass", grade: "A" },
-"23F91A05F8": { name: "SANDEEP LOVES D❤️", result : "all pass", grade: "A" },
-
-
-
-  "23F91A05F9": { name: "NAVEEN lover boy", result : "all pass", grade: "A" },
-"23F91A05H3": { name: "blade babji ", result : "all pass", grade: "A" },
-
-
-};
+fetch("student_results.json")
+  .then(response => response.json())
+  .then(data => {
+    studentData = data;
+  });
 
 function getResult() {
-  const roll = document.getElementById("rollNumber").value;
+  const roll = document.getElementById("rollNumber").value.trim();
   const display = document.getElementById("resultDisplay");
+  display.innerHTML = "";
 
-  if (students[roll]) {
-    const student = students[roll];
-    display.innerHTML = `
-      Name: ${student.name} <br>
-      result: ${student.result} <br>
-      Grade: ${student.grade}
-    `;
-  } else {
-    display.innerHTML = "Roll number not found!";
+  if (!studentData[roll]) {
+    display.innerHTML = "<p>Student not found. Please check the Hall Ticket Number.</p>";
+    return;
   }
+
+  const student = studentData[roll];
+  let output = `<h3>Results for ${roll}</h3><table border="1" cellpadding="6" style="width:100%;border-collapse:collapse;">
+    <tr><th>Subject</th><th>Marks</th><th>Grade</th></tr>`;
+  for (const subject in student) {
+    const result = student[subject];
+    output += `<tr><td>${subject}</td><td>${result.marks}</td><td>${result.grade}</td></tr>`;
+  }
+  output += "</table>";
+  display.innerHTML = output;
 }
